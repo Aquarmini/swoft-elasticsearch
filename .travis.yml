@@ -1,21 +1,37 @@
 language: php
 
 dist: trusty
-sudo: false
-
-php:
-  - 7.0
-  - 7.1
-  - 7.2
-  - nightly
+sudo: true
 
 matrix:
   fast_finish: true
+  include:
+      - php: 7.0
+        env: ES_VERSION="6.0"
+      - php: 7.0
+        env: ES_VERSION="6.x"
+
+      - php: 7.1
+        env: ES_VERSION="6.0"
+      - php: 7.1
+        env: ES_VERSION="6.x"
+
+      - php: 7.2
+        env: ES_VERSION="6.0"
+
+      - php: nightly
+        env: ES_VERSION="6.0"
   allow_failures:
     - php: nightly
+    - env: ES_VERSION="6.x"
 
 git:
   depth: 1
+
+env:
+  global:
+    - ES_TEST_HOST=http://localhost:9200
+    - JAVA_HOME="/usr/lib/jvm/java-8-oracle/jre"
 
 services:
   - redis-server
@@ -28,6 +44,9 @@ before_install:
 
 install:
   - cd $TRAVIS_BUILD_DIR
+  # 更新ES
+  - sudo update-java-alternatives -s java-8-oracle
+  - ./tests/download_and_run_es.sh
   # 更新扩展
   - wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.gz && mkdir -p hiredis && tar -xf hiredis.tar.gz -C hiredis --strip-components=1 && cd hiredis && sudo make -j$(nproc) && sudo make install && sudo ldconfig && cd ..
   - bash tests/swoole.install.sh
