@@ -46,7 +46,7 @@ install:
   - cd $TRAVIS_BUILD_DIR
   # 更新ES
   - sudo update-java-alternatives -s java-8-oracle
-  - ./tests/download_and_run_es.sh
+  - bash tests/download_and_run_es.sh
   # 更新扩展
   - wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.gz && mkdir -p hiredis && tar -xf hiredis.tar.gz -C hiredis --strip-components=1 && cd hiredis && sudo make -j$(nproc) && sudo make install && sudo ldconfig && cd ..
   - bash tests/swoole.install.sh
