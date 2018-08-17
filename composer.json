@@ -28,7 +28,9 @@
     },
     "require": {
         "php": ">=7.0",
-        "swoft/framework": "^1.0.24"
+        "swoft/framework": "^1.0.24",
+        "elasticsearch/elasticsearch": "^6.0",
+        "swoft/http-client": "^1.0"
     },
     "require-dev": {
         "swoft/swoole-ide-helper": "dev-master",

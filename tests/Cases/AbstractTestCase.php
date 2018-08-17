@@ -10,6 +10,8 @@
 namespace SwoftTest\Cases;
 
 use PHPUnit\Framework\TestCase;
+use Swoftx\Elasticsearch\Client;
+use Swoftx\Elasticsearch\ClientBuilder;
 
 /**
  * Class AbstractTestCase
@@ -18,6 +20,15 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    /** @var Client */
+    protected $client;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->client = ClientBuilder::create()->setHosts(['127.0.0.1:9200'])->build();
+    }
+
     protected function tearDown()
     {
         parent::tearDown();
