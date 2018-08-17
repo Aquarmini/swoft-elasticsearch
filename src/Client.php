@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact  limingxin@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 namespace Swoftx\Elasticsearch;
 
 use Elasticsearch\Client as ElasticsearchClient;
@@ -9,7 +16,6 @@ use Swoft\Helper\JsonHelper;
 
 class Client extends ElasticsearchClient
 {
-
     /**
      * @param $params
      * @return array
@@ -148,9 +154,9 @@ class Client extends ElasticsearchClient
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
 
-        $this->verifyNotNullOrEmpty("id", $id);
-        $this->verifyNotNullOrEmpty("type", $type);
-        $this->verifyNotNullOrEmpty("index", $index);
+        $this->verifyNotNullOrEmpty('id', $id);
+        $this->verifyNotNullOrEmpty('type', $type);
+        $this->verifyNotNullOrEmpty('index', $index);
 
         /** @var callback $endpointBuilder */
         $endpointBuilder = $this->endpoints;
@@ -204,7 +210,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function deleteByQuery($params = array())
+    public function deleteByQuery($params = [])
     {
         $index = $this->extractArgument($params, 'index');
 
@@ -241,7 +247,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function count($params = array())
+    public function count($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -281,7 +287,7 @@ class Client extends ElasticsearchClient
      *
      * @deprecated
      */
-    public function countPercolate($params = array())
+    public function countPercolate($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -348,7 +354,7 @@ class Client extends ElasticsearchClient
      *
      * @deprecated
      */
-    public function mpercolate($params = array())
+    public function mpercolate($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -385,7 +391,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function termvectors($params = array())
+    public function termvectors($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -425,7 +431,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function mtermvectors($params = array())
+    public function mtermvectors($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -498,7 +504,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function mget($params = array())
+    public function mget($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -527,7 +533,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function msearch($params = array())
+    public function msearch($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -557,7 +563,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function msearchTemplate($params = array())
+    public function msearchTemplate($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -630,7 +636,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function bulk($params = array())
+    public function bulk($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -729,7 +735,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function suggest($params = array())
+    public function suggest($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $body = $this->extractArgument($params, 'body');
@@ -833,7 +839,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function search($params = array())
+    public function search($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -866,7 +872,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function searchShards($params = array())
+    public function searchShards($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -891,7 +897,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function searchTemplate($params = array())
+    public function searchTemplate($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $type = $this->extractArgument($params, 'type');
@@ -919,7 +925,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function scroll($params = array())
+    public function scroll($params = [])
     {
         $scrollID = $this->extractArgument($params, 'scroll_id');
         $body = $this->extractArgument($params, 'body');
@@ -947,7 +953,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function clearScroll($params = array())
+    public function clearScroll($params = [])
     {
         $scrollID = $this->extractArgument($params, 'scroll_id');
         $body = $this->extractArgument($params, 'body');
@@ -1079,7 +1085,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function updateByQuery($params = array())
+    public function updateByQuery($params = [])
     {
         $index = $this->extractArgument($params, 'index');
 
@@ -1232,7 +1238,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function fieldStats($params = array())
+    public function fieldStats($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $body = $this->extractArgument($params, 'body');
@@ -1259,7 +1265,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function fieldCaps($params = array())
+    public function fieldCaps($params = [])
     {
         $index = $this->extractArgument($params, 'index');
         $body = $this->extractArgument($params, 'body');
@@ -1283,7 +1289,7 @@ class Client extends ElasticsearchClient
      *
      * @return array
      */
-    public function renderSearchTemplate($params = array())
+    public function renderSearchTemplate($params = [])
     {
         $body = $this->extractArgument($params, 'body');
         $id = $this->extractArgument($params, 'id');
@@ -1431,7 +1437,7 @@ class Client extends ElasticsearchClient
         }
 
         if (is_array($var)) {
-            if (strlen(implode("", $var)) === 0) {
+            if (strlen(implode('', $var)) === 0) {
                 throw new InvalidArgumentException("$name cannot be an array of empty strings");
             }
         }
