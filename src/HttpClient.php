@@ -7,6 +7,7 @@ use Elasticsearch\Transport;
 use Swoft\Helper\JsonHelper;
 use Swoft\HttpClient\Client;
 use Swoft\Bean\Annotation\Bean;
+use Swoftx\Elasticsearch\Pool\Config\ElasticPoolConfig;
 
 /**
  * Class HttpClient
@@ -39,8 +40,13 @@ class HttpClient
             $method = 'POST';
         }
 
+        $config = bean(ElasticPoolConfig::class);
+        
         $string = $client->request($method, $uri, [
-            'json' => $jsonArray
+            'json' => $jsonArray,
+            '_options' => [
+                'timeout' => $config->getTimeout()
+            ],
         ])->getResult();
 
         return JsonHelper::decode($string, true);

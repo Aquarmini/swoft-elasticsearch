@@ -14,7 +14,7 @@ class ElasticPoolConfig extends PoolProperties
 {
     /**
      * Connection timeout
-     * @Value(env="{$ELASTICSEARCH_CLIENT_TIMEOUT}")
+     * @Value(env="${ELASTICSEARCH_CLIENT_TIMEOUT}")
      * @var float
      */
     protected $timeout = 2;
