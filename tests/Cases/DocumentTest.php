@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact  limingxin@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 namespace SwoftTest\Cases;
 
 use SwoftTest\Testing\Constants;
@@ -28,7 +36,6 @@ class DocumentTest extends AbstractTestCase
                 'id' => 999
             ]);
         } catch (\Exception $ex) {
-
         }
 
         $body = [

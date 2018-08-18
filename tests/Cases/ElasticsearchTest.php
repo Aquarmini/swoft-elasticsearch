@@ -9,8 +9,6 @@
  */
 namespace SwoftTest\Cases;
 
-use SwoftTest\Testing\Constants;
-
 class ElasticsearchTest extends AbstractTestCase
 {
     public function testInfo()
