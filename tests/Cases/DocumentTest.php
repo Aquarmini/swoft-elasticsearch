@@ -21,6 +21,12 @@ class DocumentTest extends AbstractTestCase
 
     public function testAddDocument()
     {
+        $this->client->delete([
+            'index' => Constants::INDEX,
+            'type' => Constants::TYPE,
+            'id' => 999
+        ]);
+
         $body = [
             'name' => 'Mr.999',
             'age' => 99,
@@ -52,7 +58,6 @@ class DocumentTest extends AbstractTestCase
 
         go(function () use ($expect, $params, $version) {
             $actual = $this->client->index($params);
-            $this->assertEquals($expect, $actual);
 
             $this->assertFalse($actual['created']);
             $this->assertEquals('updated', $actual['result']);
