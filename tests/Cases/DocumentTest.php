@@ -21,11 +21,15 @@ class DocumentTest extends AbstractTestCase
 
     public function testAddDocument()
     {
-        $this->client->delete([
-            'index' => Constants::INDEX,
-            'type' => Constants::TYPE,
-            'id' => 999
-        ]);
+        try {
+            $this->client->delete([
+                'index' => Constants::INDEX,
+                'type' => Constants::TYPE,
+                'id' => 999
+            ]);
+        } catch (\Exception $ex) {
+
+        }
 
         $body = [
             'name' => 'Mr.999',
