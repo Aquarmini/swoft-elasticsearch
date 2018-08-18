@@ -57,6 +57,8 @@ install:
   - composer self-update
   - cd $TRAVIS_BUILD_DIR
   - composer install --prefer-dist --optimize-autoloader
+  - php tests/init.php
+  - sleep 5
 
 script:
   - cd $TRAVIS_BUILD_DIR

@@ -9,19 +9,16 @@
  */
 namespace SwoftTest\Cases;
 
+use SwoftTest\Testing\Constants;
+
 class ElasticsearchTest extends AbstractTestCase
 {
     public function testInfo()
     {
         $expect = $this->client->info();
         go(function () use ($expect) {
-            $info = $this->client->info();
-            $this->assertEquals($expect, $info);
+            $actual = $this->client->info();
+            $this->assertEquals($expect, $actual);
         });
-    }
-
-    public function testIndexes()
-    {
-        $indexes = $this->client->indices();
     }
 }

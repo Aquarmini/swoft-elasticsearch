@@ -2,6 +2,9 @@
 namespace Swoftx\Elasticsearch\Namespaces;
 
 use Elasticsearch\Endpoints\AbstractEndpoint;
+use Swoft\App;
+use Swoft\Helper\JsonHelper;
+use Swoft\HttpClient\Client as HttpClient;
 
 trait PerformRequest
 {
