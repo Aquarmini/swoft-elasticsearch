@@ -13,4 +13,9 @@ return [
     'autoInitBean' => true,
     'beanScan' => [],
     'docs' => require 'es_docs.php',
+    'components' => [
+        'custom' => [
+            'Swoftx\\Elasticsearch' => BASE_PATH . '/../src'
+        ]
+    ],
 ];

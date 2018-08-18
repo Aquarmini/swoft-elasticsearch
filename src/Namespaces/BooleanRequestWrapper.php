@@ -14,6 +14,7 @@ use Elasticsearch\Common\Exceptions\RoutingMissingException;
 use Elasticsearch\Endpoints\AbstractEndpoint;
 use Elasticsearch\Transport;
 use GuzzleHttp\Ring\Future\FutureArrayInterface;
+use Swoftx\Elasticsearch\HttpClient;
 
 /**
  * Trait AbstractNamespace
@@ -37,20 +38,9 @@ trait BooleanRequestWrapper
     public static function performRequest(AbstractEndpoint $endpoint, Transport $transport)
     {
         if (App::isCoContext()) {
-            $connection = $transport->getConnection();
-            $uri = $endpoint->getURI();
-            if ($params = $endpoint->getParams()) {
-                $uri .= '?' . http_build_query($params);
-            }
-            $client = new HttpClient([
-                'base_uri' => $connection->getHost()
-            ]);
+            $client = bean(HttpClient::class);
+            $response = $client->request($endpoint, $transport);
 
-            $string = $client->request($endpoint->getMethod(), $uri, [
-                'json' => $endpoint->getBody()
-            ])->getResult();
-
-            $response = JsonHelper::decode($string, true);
             if ($response['status'] === 200) {
                 return true;
             }

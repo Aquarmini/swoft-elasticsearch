@@ -63,14 +63,12 @@ class DocumentTest extends AbstractTestCase
         ];
 
         $expect = $this->client->index($params);
-        $this->assertTrue($expect['created']);
         $this->assertEquals('created', $expect['result']);
         $version = $expect['_version'];
 
         go(function () use ($expect, $params, $version) {
             $actual = $this->client->index($params);
 
-            $this->assertFalse($actual['created']);
             $this->assertEquals('updated', $actual['result']);
             $this->assertEquals($version + 1, $actual['_version']);
         });

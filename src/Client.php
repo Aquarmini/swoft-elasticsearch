@@ -29,7 +29,7 @@ use Swoftx\Elasticsearch\Namespaces\TasksNamespace;
 use Elasticsearch\Transport;
 use Swoft\App;
 use Swoft\Helper\JsonHelper;
-use Swoft\HttpClient\Client as HttpClient;
+use Swoftx\Elasticsearch\HttpClient;
 
 /**
  * Class Client
@@ -1556,26 +1556,8 @@ class Client
     private function performRequest(AbstractEndpoint $endpoint)
     {
         if (App::isCoContext()) {
-            $connection = $this->transport->getConnection();
-            $uri = $endpoint->getURI();
-            if ($params = $endpoint->getParams()) {
-                $uri .= '?' . http_build_query($params);
-            }
-            $client = new HttpClient([
-                'base_uri' => $connection->getHost(),
-            ]);
-
-            $method = $endpoint->getMethod();
-            $jsonArray = $endpoint->getBody();
-            if (!empty($jsonArray) && $method === 'GET') {
-                $method = 'POST';
-            }
-
-            $string = $client->request($method, $uri, [
-                'json' => $jsonArray
-            ])->getResult();
-
-            return JsonHelper::decode($string, true);
+            $client = bean(HttpClient::class);
+            return $client->request($endpoint, $this->transport);
         }
 
         $promise = $this->transport->performRequest(
