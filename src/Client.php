@@ -1556,11 +1556,17 @@ class Client
                 $uri .= '?' . http_build_query($params);
             }
             $client = new HttpClient([
-                'base_uri' => $connection->getHost()
+                'base_uri' => $connection->getHost(),
             ]);
 
-            $string = $client->request($endpoint->getMethod(), $uri, [
-                'json' => $endpoint->getBody()
+            $method = $endpoint->getMethod();
+            $jsonArray = $endpoint->getBody();
+            if (!empty($jsonArray) && $method === 'GET') {
+                $method = 'POST';
+            }
+
+            $string = $client->request($method, $uri, [
+                'json' => $jsonArray
             ])->getResult();
 
             return JsonHelper::decode($string, true);
