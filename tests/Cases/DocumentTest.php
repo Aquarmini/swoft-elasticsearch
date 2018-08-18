@@ -137,7 +137,7 @@ class DocumentTest extends AbstractTestCase
 
             // 删除
             $res = $this->client->delete($params2);
-            
+
             $this->assertEquals('deleted', $res['result']);
             $this->assertEquals(1, $res['_shards']['successful']);
             $this->assertEquals(0, $res['_shards']['failed']);
