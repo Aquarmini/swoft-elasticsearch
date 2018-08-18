@@ -12,15 +12,15 @@ class Constants
         'body' => [
             'properties' => [
                 'id' => ['type' => 'long'],
-                'name' => ['type' => 'string'],
+                'name' => ['type' => 'text'],
                 'book' => [
                     'type' => 'object',
                     'properties' => [
-                        'author' => ['type' => 'string'],
-                        'name' => ['type' => 'string'],
+                        'author' => ['type' => 'text'],
+                        'name' => ['type' => 'text'],
                         'publish' => ['type' => 'date'],
                         'desc' => [
-                            'type' => 'string',
+                            'type' => 'text',
                         ],
                     ],
                 ],
