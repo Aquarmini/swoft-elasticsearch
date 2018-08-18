@@ -28,8 +28,6 @@ use Swoftx\Elasticsearch\Namespaces\BooleanRequestWrapper;
 use Swoftx\Elasticsearch\Namespaces\TasksNamespace;
 use Elasticsearch\Transport;
 use Swoft\App;
-use Swoft\Helper\JsonHelper;
-use Swoftx\Elasticsearch\HttpClient;
 
 /**
  * Class Client

@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact  limingxin@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 namespace Swoftx\Elasticsearch;
 
 use Elasticsearch\Endpoints\AbstractEndpoint;
@@ -41,7 +48,7 @@ class HttpClient
         }
 
         $config = bean(ElasticPoolConfig::class);
-        
+
         $string = $client->request($method, $uri, [
             'json' => $jsonArray,
             '_options' => [
