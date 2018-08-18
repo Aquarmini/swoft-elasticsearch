@@ -19,4 +19,9 @@ class ElasticsearchTest extends AbstractTestCase
             $this->assertEquals($expect, $info);
         });
     }
+
+    public function testIndexes()
+    {
+        $indexes = $this->client->indices();
+    }
 }
