@@ -20,9 +20,9 @@ class DocumentTest extends AbstractTestCase
             'type' => Constants::TYPE,
             'id' => 0,
         ];
-        $expect = $this->client->get($params);
+        $expect = $this->getClient()->get($params);
         go(function () use ($expect, $params) {
-            $actual = $this->client->get($params);
+            $actual = $this->getClient()->get($params);
             $this->assertEquals($expect, $actual);
         });
     }
@@ -30,7 +30,7 @@ class DocumentTest extends AbstractTestCase
     public function testAddDocument()
     {
         try {
-            $this->client->delete([
+            $this->getClient()->delete([
                 'index' => Constants::INDEX,
                 'type' => Constants::TYPE,
                 'id' => 999
@@ -62,12 +62,12 @@ class DocumentTest extends AbstractTestCase
             'body' => $body,
         ];
 
-        $expect = $this->client->index($params);
+        $expect = $this->getClient()->index($params);
         $this->assertEquals('created', $expect['result']);
         $version = $expect['_version'];
 
         go(function () use ($expect, $params, $version) {
-            $actual = $this->client->index($params);
+            $actual = $this->getClient()->index($params);
 
             $this->assertEquals('updated', $actual['result']);
             $this->assertEquals($version + 1, $actual['_version']);
@@ -99,7 +99,7 @@ class DocumentTest extends AbstractTestCase
             'body' => $body,
         ];
 
-        $this->client->index($params);
+        $this->getClient()->index($params);
 
         $params = [
             'index' => Constants::INDEX,
@@ -114,29 +114,29 @@ class DocumentTest extends AbstractTestCase
                 'doc_as_upsert' => true,
             ]
         ];
-        $this->client->update($params);
+        $this->getClient()->update($params);
 
         $params2 = [
             'index' => Constants::INDEX,
             'type' => Constants::TYPE,
             'id' => 998,
         ];
-        $expect = $this->client->get($params2);
+        $expect = $this->getClient()->get($params2);
 
         $this->assertEquals('limx', $expect['_source']['book']['author']);
         $this->assertEquals('2018-01-02', $expect['_source']['book']['publish']);
 
         go(function () use ($expect, $params, $params2) {
             $params['body']['doc']['book']['publish'] = '2018-01-03';
-            $this->client->update($params);
-            $actual = $this->client->get($params2);
+            $this->getClient()->update($params);
+            $actual = $this->getClient()->get($params2);
 
             $this->assertEquals($expect['_version'] + 1, $actual['_version']);
             $this->assertEquals('limx', $actual['_source']['book']['author']);
             $this->assertEquals('2018-01-03', $actual['_source']['book']['publish']);
 
             // 删除
-            $res = $this->client->delete($params2);
+            $res = $this->getClient()->delete($params2);
 
             $this->assertEquals('deleted', $res['result']);
             $this->assertEquals(1, $res['_shards']['successful']);
@@ -182,11 +182,11 @@ class DocumentTest extends AbstractTestCase
             ],
         ];
 
-        $expect = $this->client->search($params);
+        $expect = $this->getClient()->search($params);
         $this->assertEquals(3, $expect['hits']['total']);
 
         go(function () use ($params, $expect) {
-            $actual = $this->client->search($params);
+            $actual = $this->getClient()->search($params);
             $this->assertEquals(3, $actual['hits']['total']);
             $this->assertEquals($expect['hits'], $actual['hits']);
         });

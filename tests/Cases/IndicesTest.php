@@ -15,10 +15,10 @@ class IndicesTest extends AbstractTestCase
 {
     public function testIndicesExist()
     {
-        $indexes = $this->client->indices();
+        $indexes = $this->getClient()->indices();
         $expect = $indexes->exists(['index' => Constants::INDEX]);
         go(function () use ($expect) {
-            $indexes = $this->client->indices();
+            $indexes = $this->getClient()->indices();
             $actual = $indexes->exists(['index' => Constants::INDEX]);
             $this->assertEquals($expect, $actual);
         });
@@ -26,10 +26,10 @@ class IndicesTest extends AbstractTestCase
 
     public function testIndicesInfo()
     {
-        $indexes = $this->client->indices();
+        $indexes = $this->getClient()->indices();
         $expect = $indexes->get(['index' => Constants::INDEX]);
         go(function () use ($expect) {
-            $indexes = $this->client->indices();
+            $indexes = $this->getClient()->indices();
             $actual = $indexes->get(['index' => Constants::INDEX]);
             $this->assertEquals($expect, $actual);
         });

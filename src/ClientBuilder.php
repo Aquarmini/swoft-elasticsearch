@@ -11,17 +11,37 @@ namespace Swoftx\Elasticsearch;
 
 use Elasticsearch\ClientBuilder as ElasticsearchClientBuilder;
 use Elasticsearch\Transport;
+use GuzzleHttp\Ring\Client\CurlHandler;
+use GuzzleHttp\Ring\Client\CurlMultiHandler;
+use GuzzleHttp\Ring\Client\Middleware;
+use Guzzlex\SwooleHandlers\RingPHP\CoroutineHandler;
+use Swoole\Coroutine;
 
 class ClientBuilder extends ElasticsearchClientBuilder
 {
     /**
-     * @param Transport $transport
-     * @param callable  $endpoint
-     * @param Object[]  $registeredNamespaces
-     * @return Client
+     * @param array $multiParams
+     * @param array $singleParams
+     * @throws \RuntimeException
+     * @return callable
      */
-    protected function instantiate(Transport $transport, callable $endpoint, array $registeredNamespaces)
+    public static function defaultHandler($multiParams = [], $singleParams = [])
     {
-        return new Client($transport, $endpoint, $registeredNamespaces);
+        $future = null;
+        if (extension_loaded('swoole') && Coroutine::getuid() > 0) {
+            $default = new CoroutineHandler();
+        } elseif (extension_loaded('curl')) {
+            $config = array_merge(['mh' => curl_multi_init()], $multiParams);
+            if (function_exists('curl_reset')) {
+                $default = new CurlHandler($singleParams);
+                $future = new CurlMultiHandler($config);
+            } else {
+                $default = new CurlMultiHandler($config);
+            }
+        } else {
+            throw new \RuntimeException('Elasticsearch-PHP requires cURL, or a custom HTTP handler.');
+        }
+
+        return $future ? Middleware::wrapFuture($default, $future) : $default;
     }
 }
