@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact  limingxin@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 namespace Swoftx\Elasticsearch\Connections;
 
 use Elasticsearch\Common\Exceptions\AlreadyExpiredException;
@@ -18,13 +25,13 @@ use Elasticsearch\Common\Exceptions\RoutingMissingException;
 use Elasticsearch\Common\Exceptions\ScriptLangNotSupportedException;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Elasticsearch\Common\Exceptions\TransportException;
-use Elasticsearch\Connections\ConnectionInterface;
 use Elasticsearch\Serializers\SerializerInterface;
 use Elasticsearch\Transport;
 use GuzzleHttp\Ring\Core;
 use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Ring\Exception\RingException;
 use Psr\Log\LoggerInterface;
+use Elasticsearch\Connections\Connection as ElasticConnection;
 
 /**
  * Class AbstractConnection
@@ -35,7 +42,7 @@ use Psr\Log\LoggerInterface;
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache2
  * @link     http://elastic.co
  */
-class Connection implements ConnectionInterface
+class Connection extends ElasticConnection
 {
     /** @var  callable */
     protected $handler;
@@ -88,7 +95,7 @@ class Connection implements ConnectionInterface
     /** @var int */
     private $failedPings = 0;
 
-    private $lastRequest = array();
+    private $lastRequest = [];
 
     /**
      * Constructor
@@ -107,9 +114,7 @@ class Connection implements ConnectionInterface
         SerializerInterface $serializer,
         LoggerInterface $log,
         LoggerInterface $trace
-    )
-    {
-
+    ) {
         if (isset($hostDetails['port']) !== true) {
             $hostDetails['port'] = 9200;
         }
@@ -196,18 +201,16 @@ class Connection implements ConnectionInterface
     private function wrapHandler(callable $handler, LoggerInterface $logger, LoggerInterface $tracer)
     {
         return function (array $request, Connection $connection, Transport $transport = null, $options) use ($handler, $logger, $tracer) {
-
             $this->lastRequest = [];
             $this->lastRequest['request'] = $request;
 
             // Send the request using the wrapped handler.
             $response = Core::proxy($handler($request), function ($response) use ($connection, $transport, $logger, $tracer, $request, $options) {
-
                 $this->lastRequest['response'] = $response;
 
                 if (isset($response['error']) === true) {
                     if ($response['error'] instanceof ConnectException || $response['error'] instanceof RingException) {
-                        $this->log->warning("Curl exception encountered.");
+                        $this->log->warning('Curl exception encountered.');
 
                         $exception = $this->getCurlRetryException($request, $response);
 
@@ -350,31 +353,31 @@ class Connection implements ConnectionInterface
      */
     public function logRequestSuccess($method, $fullURI, $body, $headers, $statusCode, $response, $duration)
     {
-        $this->log->debug('Request Body', array($body));
+        $this->log->debug('Request Body', [$body]);
         $this->log->info(
             'Request Success:',
-            array(
+            [
                 'method' => $method,
                 'uri' => $fullURI,
                 'headers' => $headers,
                 'HTTP code' => $statusCode,
                 'duration' => $duration,
-            )
+            ]
         );
-        $this->log->debug('Response', array($response));
+        $this->log->debug('Response', [$response]);
 
         // Build the curl command for Trace.
         $curlCommand = $this->buildCurlCommand($method, $fullURI, $body);
         $this->trace->info($curlCommand);
         $this->trace->debug(
             'Response:',
-            array(
+            [
                 'response' => $response,
                 'method' => $method,
                 'uri' => $fullURI,
                 'HTTP code' => $statusCode,
                 'duration' => $duration,
-            )
+            ]
         );
     }
 
@@ -394,32 +397,32 @@ class Connection implements ConnectionInterface
      */
     public function logRequestFail($method, $fullURI, $body, $headers, $statusCode, $response, $duration, \Exception $exception)
     {
-        $this->log->debug('Request Body', array($body));
+        $this->log->debug('Request Body', [$body]);
         $this->log->warning(
             'Request Failure:',
-            array(
+            [
                 'method' => $method,
                 'uri' => $fullURI,
                 'headers' => $headers,
                 'HTTP code' => $statusCode,
                 'duration' => $duration,
                 'error' => $exception->getMessage(),
-            )
+            ]
         );
-        $this->log->warning('Response', array($response));
+        $this->log->warning('Response', [$response]);
 
         // Build the curl command for Trace.
         $curlCommand = $this->buildCurlCommand($method, $fullURI, $body);
         $this->trace->info($curlCommand);
         $this->trace->debug(
             'Response:',
-            array(
+            [
                 'response' => $response,
                 'method' => $method,
                 'uri' => $fullURI,
                 'HTTP code' => $statusCode,
                 'duration' => $duration,
-            )
+            ]
         );
     }
 
@@ -605,7 +608,7 @@ class Connection implements ConnectionInterface
             return;
         }
 
-        if ($statusCode === 400 && strpos($responseBody, "AlreadyExpiredException") !== false) {
+        if ($statusCode === 400 && strpos($responseBody, 'AlreadyExpiredException') !== false) {
             $exception = new AlreadyExpiredException($responseBody, $statusCode);
         } elseif ($statusCode === 403) {
             $exception = new Forbidden403Exception($responseBody, $statusCode);
@@ -657,7 +660,7 @@ class Connection implements ConnectionInterface
             return;
         }
 
-        if ($statusCode === 500 && strpos($responseBody, "RoutingMissingException") !== false) {
+        if ($statusCode === 500 && strpos($responseBody, 'RoutingMissingException') !== false) {
             $exception = new RoutingMissingException($exception->getMessage(), $statusCode, $exception);
         } elseif ($statusCode === 500 && preg_match('/ActionRequestValidationException.+ no documents to get/', $responseBody) === 1) {
             $exception = new NoDocumentsToGetException($exception->getMessage(), $statusCode, $exception);
