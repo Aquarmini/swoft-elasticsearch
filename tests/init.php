@@ -51,7 +51,8 @@ if ($res['acknowledged']) {
 }
 
 // 导入数据
-$docs = \Swoft\App::getProperties()->get('docs');
+$docs = require 'config/properties/es_docs.php';
+
 foreach ($docs as $id => $doc) {
     $param = [
         'index' => $index,
