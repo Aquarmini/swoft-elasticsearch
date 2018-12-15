@@ -112,7 +112,8 @@ class DocumentTest extends AbstractTestCase
                     ],
                 ],
                 'doc_as_upsert' => true,
-            ]
+            ],
+            'retry_on_conflict' => 5,
         ];
         $this->getClient()->update($params);
 
