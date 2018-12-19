@@ -10,8 +10,10 @@
 namespace SwoftTest\Cases;
 
 use Elasticsearch\Client;
+use Guzzlex\SwooleHandlers\RingPHP\CoroutineHandler;
 use PHPUnit\Framework\TestCase;
 use Swoftx\Elasticsearch\ClientBuilder;
+use Swoole\Coroutine;
 
 /**
  * Class AbstractTestCase
@@ -27,7 +29,16 @@ abstract class AbstractTestCase extends TestCase
 
     public function getClient(): Client
     {
-        return ClientBuilder::create()->setHosts(['127.0.0.1:9200'])->build();
+        $builder = ClientBuilder::create()->setHosts(['127.0.0.1:9200']);
+        if (extension_loaded('swoole') && Coroutine::getuid() > 0) {
+            $handler = new CoroutineHandler();
+            $handler->setSettings([
+                'timeout' => 2
+            ]);
+
+            $builder->setHandler($handler);
+        }
+        return $builder->build();
     }
 
     protected function tearDown()
