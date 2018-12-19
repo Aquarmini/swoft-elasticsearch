@@ -31,8 +31,7 @@ abstract class AbstractTestCase extends TestCase
     {
         $builder = ClientBuilder::create()->setHosts(['127.0.0.1:9200']);
         if (extension_loaded('swoole') && Coroutine::getuid() > 0) {
-            $handler = new CoroutineHandler();
-            $handler->setSettings([
+            $handler = new CoroutineHandler([
                 'timeout' => 2
             ]);
 
