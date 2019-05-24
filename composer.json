@@ -35,6 +35,7 @@
         "phpunit/phpunit": "^7.0"
     },
     "scripts": {
-        "cs-fix": "php-cs-fixer fix $1"
+        "cs-fix": "php-cs-fixer fix $1",
+        "test": "./tests/co-phpunit -c phpunit.xml --colors=always"
     }
 }
