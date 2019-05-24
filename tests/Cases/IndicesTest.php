@@ -17,21 +17,17 @@ class IndicesTest extends AbstractTestCase
     {
         $indexes = $this->getClient()->indices();
         $expect = $indexes->exists(['index' => Constants::INDEX]);
-        go(function () use ($expect) {
-            $indexes = $this->getClient()->indices();
-            $actual = $indexes->exists(['index' => Constants::INDEX]);
-            $this->assertEquals($expect, $actual);
-        });
+        $indexes = $this->getClient()->indices();
+        $actual = $indexes->exists(['index' => Constants::INDEX]);
+        $this->assertEquals($expect, $actual);
     }
 
     public function testIndicesInfo()
     {
         $indexes = $this->getClient()->indices();
         $expect = $indexes->get(['index' => Constants::INDEX]);
-        go(function () use ($expect) {
-            $indexes = $this->getClient()->indices();
-            $actual = $indexes->get(['index' => Constants::INDEX]);
-            $this->assertEquals($expect, $actual);
-        });
+        $indexes = $this->getClient()->indices();
+        $actual = $indexes->get(['index' => Constants::INDEX]);
+        $this->assertEquals($expect, $actual);
     }
 }

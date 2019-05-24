@@ -14,9 +14,7 @@ class ElasticsearchTest extends AbstractTestCase
     public function testInfo()
     {
         $expect = $this->getClient()->info();
-        go(function () use ($expect) {
-            $actual = $this->getClient()->info();
-            $this->assertEquals($expect, $actual);
-        });
+        $actual = $this->getClient()->info();
+        $this->assertEquals($expect, $actual);
     }
 }

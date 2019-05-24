@@ -21,10 +21,8 @@ class DocumentTest extends AbstractTestCase
             'id' => 0,
         ];
         $expect = $this->getClient()->get($params);
-        go(function () use ($expect, $params) {
-            $actual = $this->getClient()->get($params);
-            $this->assertEquals($expect, $actual);
-        });
+        $actual = $this->getClient()->get($params);
+        $this->assertEquals($expect, $actual);
     }
 
     public function testAddDocument()
@@ -66,12 +64,10 @@ class DocumentTest extends AbstractTestCase
         $this->assertEquals('created', $expect['result']);
         $version = $expect['_version'];
 
-        go(function () use ($expect, $params, $version) {
-            $actual = $this->getClient()->index($params);
+        $actual = $this->getClient()->index($params);
 
-            $this->assertEquals('updated', $actual['result']);
-            $this->assertEquals($version + 1, $actual['_version']);
-        });
+        $this->assertEquals('updated', $actual['result']);
+        $this->assertEquals($version + 1, $actual['_version']);
     }
 
     public function testCurdDocument()
@@ -127,22 +123,20 @@ class DocumentTest extends AbstractTestCase
         $this->assertEquals('limx', $expect['_source']['book']['author']);
         $this->assertEquals('2018-01-02', $expect['_source']['book']['publish']);
 
-        go(function () use ($expect, $params, $params2) {
-            $params['body']['doc']['book']['publish'] = '2018-01-03';
-            $this->getClient()->update($params);
-            $actual = $this->getClient()->get($params2);
+        $params['body']['doc']['book']['publish'] = '2018-01-03';
+        $this->getClient()->update($params);
+        $actual = $this->getClient()->get($params2);
 
-            $this->assertEquals($expect['_version'] + 1, $actual['_version']);
-            $this->assertEquals('limx', $actual['_source']['book']['author']);
-            $this->assertEquals('2018-01-03', $actual['_source']['book']['publish']);
+        $this->assertEquals($expect['_version'] + 1, $actual['_version']);
+        $this->assertEquals('limx', $actual['_source']['book']['author']);
+        $this->assertEquals('2018-01-03', $actual['_source']['book']['publish']);
 
-            // 删除
-            $res = $this->getClient()->delete($params2);
+        // 删除
+        $res = $this->getClient()->delete($params2);
 
-            $this->assertEquals('deleted', $res['result']);
-            $this->assertEquals(1, $res['_shards']['successful']);
-            $this->assertEquals(0, $res['_shards']['failed']);
-        });
+        $this->assertEquals('deleted', $res['result']);
+        $this->assertEquals(1, $res['_shards']['successful']);
+        $this->assertEquals(0, $res['_shards']['failed']);
     }
 
     public function testBoolGeoQuery()
@@ -186,10 +180,8 @@ class DocumentTest extends AbstractTestCase
         $expect = $this->getClient()->search($params);
         $this->assertEquals(3, $expect['hits']['total']);
 
-        go(function () use ($params, $expect) {
-            $actual = $this->getClient()->search($params);
-            $this->assertEquals(3, $actual['hits']['total']);
-            $this->assertEquals($expect['hits'], $actual['hits']);
-        });
+        $actual = $this->getClient()->search($params);
+        $this->assertEquals(3, $actual['hits']['total']);
+        $this->assertEquals($expect['hits'], $actual['hits']);
     }
 }

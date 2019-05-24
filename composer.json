@@ -28,11 +28,13 @@
     },
     "require": {
         "php": ">=7.0",
-        "elasticsearch/elasticsearch": "^6.0",
-        "limingxinleo/guzzle-swoole-handler": "^1.0"
+        "elasticsearch/elasticsearch": "^6.0"
     },
     "require-dev": {
         "swoft/swoole-ide-helper": "dev-master",
-        "phpunit/phpunit": "^5.7"
+        "phpunit/phpunit": "^7.0"
+    },
+    "scripts": {
+        "cs-fix": "php-cs-fixer fix $1"
     }
 }

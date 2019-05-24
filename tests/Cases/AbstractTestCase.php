@@ -10,9 +10,9 @@
 namespace SwoftTest\Cases;
 
 use Elasticsearch\Client;
-use Guzzlex\SwooleHandlers\RingPHP\CoroutineHandler;
+use Swoftx\Elasticsearch\CoroutineHandler;
 use PHPUnit\Framework\TestCase;
-use Swoftx\Elasticsearch\ClientBuilder;
+use Elasticsearch\ClientBuilder;
 use Swoole\Coroutine;
 
 /**
@@ -43,8 +43,5 @@ abstract class AbstractTestCase extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        swoole_timer_after(6 * 1000, function () {
-            swoole_event_exit();
-        });
     }
 }

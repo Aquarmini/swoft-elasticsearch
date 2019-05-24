@@ -14,9 +14,17 @@ composer require limingxinleo/swoft-elasticsearch
 ~~~php
 <?php
 
-use Swoftx\Elasticsearch\ClientBuilder;
+use Elasticsearch\ClientBuilder;
+use Swoftx\Elasticsearch\CoroutineHandler;
 
-$client = ClientBuilder::create()->setHosts(['127.0.0.1:9200'])->build();
+$handler = new CoroutineHandler([
+    'timeout' => 2
+]);
+            
+$client = ClientBuilder::create()
+    ->setHosts(['127.0.0.1:9200'])
+    ->setHandler($handler)
+    ->build();
 
 go(function() use ($client){
     print_r($client->info());

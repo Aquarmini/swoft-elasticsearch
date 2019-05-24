@@ -9,7 +9,7 @@
  */
 require_once 'bootstrap.php';
 
-use Swoftx\Elasticsearch\ClientBuilder;
+use Elasticsearch\ClientBuilder;
 use SwoftTest\Testing\Constants;
 
 $client = ClientBuilder::create()->setHosts(['127.0.0.1:9200'])->build();
